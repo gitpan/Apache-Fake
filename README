@@ -2,8 +2,8 @@ NAME
     Apache::Fake - fake a mod_perl request object
 
 VERSION
-    This document refers to version 0.9 of Apache::Fake, released November
-    22, 2001.
+    This document refers to version 0.10 of Apache::Fake, released February
+    1, 2002.
 
 SYNOPSIS
     Case 1: Using a CGI script as Apache SetHandler
@@ -103,7 +103,7 @@ WARNING
     This is alpha-quality software. It works for me and for some moderately
     complex perl modules (the HTML::Mason suite). Not every aspect was
     tested or checked for strict compatibility to mod_perl 1.27. Please
-    report any problems you find.
+    report any problems you find via http://rt.cpan.org.
 
 TO DO
     * Emulate Perl*Handlers by calling them in sequence
@@ -125,7 +125,7 @@ AUTHOR
     Jörg Walter <ehrlich@ich.bin.kein.hoschi.de>.
 
 VERSION
-    0.9
+    0.10
 
 SEE ALSO
     the Apache manpage, the Apache::Request manpage

@@ -20,8 +20,9 @@ package Apache::Fake;
 use strict;
 require 5.6.0;
 BEGIN {
-	$Apache::Fake::VERSION = 0.9;
+	$Apache::Fake::VERSION = 0.10;
 	$INC{'Apache.pm'} = $INC{'Apache/Fake.pm'};
+	$INC{'Apache/Constants.pm'} = $INC{'Apache/Fake.pm'};
 	$INC{'Apache/Request.pm'} = $INC{'Apache/Fake.pm'};
 	$INC{'Apache/Log.pm'} = $INC{'Apache/Fake.pm'};
 	$INC{'Apache/Table.pm'} = $INC{'Apache/Fake.pm'};
@@ -249,6 +250,187 @@ sub link {
 	my ($self, $fn) = @_;
 	link($self->tempname,$fn);
 }
+
+package Apache::Constants;
+use vars qw (%EXPORT_TAGS @EXPORT_OK $EXPORT @ISA);
+require Exporter;
+@ISA = qw(Exporter);
+
+my @common = qw(OK
+		DECLINED
+		DONE
+		NOT_FOUND
+		FORBIDDEN
+		AUTH_REQUIRED
+		SERVER_ERROR);
+
+use constant OK => 0;
+use constant DECLINED => -1;
+use constant DONE => -2;
+use constant NOT_FOUND => 404;
+use constant FORBIDDEN => 403;
+use constant AUTH_REQUIRED => 401;
+use constant SERVER_ERROR => 500;
+
+my(@methods) = qw(M_CONNECT
+		  M_DELETE
+		  M_GET
+		  M_INVALID
+		  M_OPTIONS
+		  M_POST
+		  M_PUT
+		  M_TRACE
+		  M_PATCH
+		  M_PROPFIND
+		  M_PROPPATCH
+		  M_MKCOL
+		  M_COPY
+		  M_MOVE
+		  M_LOCK
+		  M_UNLOCK
+		  M_HEAD
+		  METHODS);
+
+use constant M_CONNECT => 0;
+use constant M_DELETE => 1;
+use constant M_GET => 2;
+use constant M_INVALID => 3;
+use constant M_OPTIONS => 4;
+use constant M_POST => 5;
+use constant M_PUT => 6;
+use constant M_TRACE => 7;
+use constant M_PATCH => 8;
+use constant M_PROPFIND => 9;
+use constant M_PROPPATCH => 10;
+use constant M_MKCOL => 11;
+use constant M_COPY => 12;
+use constant M_MOVE => 13;
+use constant M_LOCK => 14;
+use constant M_UNLOCK => 15;
+use constant M_HEAD => 16;
+use constant METHODS => 17;
+
+my(@options)    = qw(OPT_NONE OPT_INDEXES OPT_INCLUDES 
+		     OPT_SYM_LINKS OPT_EXECCGI OPT_UNSET OPT_INCNOEXEC
+		     OPT_SYM_OWNER OPT_MULTI OPT_ALL);
+
+my(@server)     = qw(MODULE_MAGIC_NUMBER
+		     SERVER_VERSION SERVER_BUILT);
+
+my(@response)   = qw(DOCUMENT_FOLLOWS
+		     MOVED
+		     REDIRECT
+		     USE_LOCAL_COPY
+		     BAD_REQUEST
+		     BAD_GATEWAY 
+		     RESPONSE_CODES
+		     NOT_IMPLEMENTED
+		     NOT_AUTHORITATIVE
+		     CONTINUE);
+
+my(@satisfy)    = qw(SATISFY_ALL SATISFY_ANY SATISFY_NOSPEC);
+
+my(@remotehost) = qw(REMOTE_HOST
+		     REMOTE_NAME
+		     REMOTE_NOLOOKUP
+		     REMOTE_DOUBLE_REV);
+
+use constant REMOTE_HOST       => 0;
+use constant REMOTE_NAME       => 1;
+use constant REMOTE_NOLOOKUP   => 2;
+use constant REMOTE_DOUBLE_REV => 3;
+
+my(@http)       = qw(HTTP_OK
+		     HTTP_MOVED_TEMPORARILY
+		     HTTP_MOVED_PERMANENTLY
+		     HTTP_METHOD_NOT_ALLOWED 
+		     HTTP_NOT_MODIFIED
+		     HTTP_UNAUTHORIZED
+		     HTTP_FORBIDDEN
+		     HTTP_NOT_FOUND
+		     HTTP_BAD_REQUEST
+		     HTTP_INTERNAL_SERVER_ERROR
+		     HTTP_NOT_ACCEPTABLE 
+		     HTTP_NO_CONTENT
+		     HTTP_PRECONDITION_FAILED
+		     HTTP_SERVICE_UNAVAILABLE
+		     HTTP_VARIANT_ALSO_VARIES);
+
+use constant HTTP_OK                    => 200;
+use constant HTTP_MOVED_TEMPORARILY     => 302;
+use constant HTTP_MOVED_PERMANENTLY     => 301;
+use constant HTTP_METHOD_NOT_ALLOWED    => 405;
+use constant HTTP_NOT_MODIFIED          => 304;
+use constant HTTP_UNAUTHORIZED          => 401;
+use constant HTTP_FORBIDDEN             => 403;
+use constant HTTP_NOT_FOUND             => 404;
+use constant HTTP_BAD_REQUEST           => 400;
+use constant HTTP_INTERNAL_SERVER_ERROR => 500;
+use constant HTTP_NOT_ACCEPTABLE        => 406;
+use constant HTTP_NO_CONTENT            => 204;
+use constant HTTP_PRECONDITION_FAILED   => 412;
+use constant HTTP_SERVICE_UNAVAILABLE   => 503;
+use constant HTTP_VARIANT_ALSO_VARIES   => 506;
+
+my(@config)     = qw(DECLINE_CMD);
+my(@types)      = qw(DIR_MAGIC_TYPE);
+my(@override)    = qw(
+		      OR_NONE
+		      OR_LIMIT
+		      OR_OPTIONS
+		      OR_FILEINFO
+		      OR_AUTHCFG
+		      OR_INDEXES
+		      OR_UNSET
+		      OR_ALL
+		      ACCESS_CONF
+		      RSRC_CONF);
+my(@args_how)    = qw(
+		      RAW_ARGS
+		      TAKE1
+		      TAKE2
+		      ITERATE
+		      ITERATE2
+		      FLAG
+		      NO_ARGS
+		      TAKE12
+		      TAKE3
+		      TAKE23
+		      TAKE123);
+
+my $rc = [@common, @response];
+
+%EXPORT_TAGS = (
+		common     => \@common,
+		config     => \@config,
+		response   => $rc,
+		http       => \@http,
+		options    => \@options,
+		methods    => \@methods,
+		remotehost => \@remotehost,
+		satisfy    => \@satisfy,
+		server     => \@server,				   
+		types      => \@types, 
+		args_how   => \@args_how,
+		override   => \@override,
+		response_codes => $rc,
+		);
+
+@EXPORT_OK = (
+	      @response,
+	      @http,
+	      @options,
+	      @methods,
+	      @remotehost,
+	      @satisfy,
+	      @server,
+	      @config,
+	      @types,
+	      @args_how,
+	      @override,
+	      ); 
+
+*EXPORT = \@common;
 
 package Apache;
 use strict;
@@ -692,8 +874,8 @@ Apache::Fake - fake a mod_perl request object
 
 =head1 VERSION
 
-This document refers to version 0.9 of Apache::Fake, released
-November 22, 2001.
+This document refers to version 0.10 of Apache::Fake, released
+February 1, 2002.
 
 =head1 SYNOPSIS
 
@@ -809,7 +991,8 @@ inside your normal document root.
 
 This is alpha-quality software. It works for me and for some moderately complex
 perl modules (the HTML::Mason suite). Not every aspect was tested or checked for
-strict compatibility to mod_perl 1.27. Please report any problems you find.
+strict compatibility to mod_perl 1.27. Please report any problems you find via
+http://rt.cpan.org.
 
 =head1 TO DO
 
@@ -845,7 +1028,7 @@ Jörg Walter E<lt>ehrlich@ich.bin.kein.hoschi.deE<gt>.
 
 =head1 VERSION
 
-0.9
+0.10
 
 =head1 SEE ALSO
 
